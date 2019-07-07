@@ -116,6 +116,92 @@ test('Date', t => {
     t.throws(() => validate('Date', m.clone().subtract(5, 'days'), { _after: m.clone() }))
 })
 
+test('File', t => {
+    t.truthy(
+        validate('File', {
+            name: 'some-file.pdf',
+            data: Buffer.from('hello'),
+            size: 9510088,
+            mimetype: 'application/pdf',
+            md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+        })
+    )
+
+    // passing wrong stuff
+    t.throws(() =>
+        validate('File', {
+            data: Buffer.from('hello'),
+            size: 9510088,
+            mimetype: 'application/pdf',
+            md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+        })
+    )
+    t.throws(() =>
+        validate('File', {
+            name: 'some-file.pdf',
+            size: 9510088,
+            mimetype: 'application/pdf',
+            md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+        })
+    )
+    t.throws(() =>
+        validate('File', {
+            name: 'some-file.pdf',
+            data: Buffer.from('hello'),
+            mimetype: 'application/pdf',
+            md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+        })
+    )
+    t.throws(() =>
+        validate('File', {
+            name: 'some-file.pdf',
+            data: Buffer.from('hello'),
+            size: 9510088,
+            md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+        })
+    )
+    t.throws(() =>
+        validate('File', {
+            name: 'some-file.pdf',
+            data: Buffer.from('hello'),
+            size: 9510088,
+            mimetype: 'application/pdf',
+        })
+    )
+
+    // don't meet conditions
+    t.throws(() =>
+        validate(
+            'File',
+            {
+                name: 'some-file.pdf',
+                data: Buffer.from('hello'),
+                size: 500,
+                mimetype: 'application/pdf',
+                md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+            },
+            {
+                _minSize: 600,
+            }
+        )
+    )
+    t.throws(() =>
+        validate(
+            'File',
+            {
+                name: 'some-file.pdf',
+                data: Buffer.from('hello'),
+                size: 500,
+                mimetype: 'application/pdf',
+                md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
+            },
+            {
+                _maxSize: 400,
+            }
+        )
+    )
+})
+
 test('Mixed', t => {
     t.truthy(validate('Mixed', { a: 1, b: { c: true } }))
 })

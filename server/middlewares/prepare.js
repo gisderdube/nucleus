@@ -1,7 +1,8 @@
 const prepare = (schema, data) => {
+    const preparedSchema = prepareSchema(schema)
     return {
-        schema: prepareSchema(schema),
-        data: { ...data },
+        schema: preparedSchema,
+        data: prepareData(data, preparedSchema),
     }
 }
 
@@ -38,6 +39,29 @@ const prepareSchema = schema => {
     })
 
     return preparedSchema
+}
+
+function prepareData(data, schema) {
+    const preparedData = {}
+
+    Object.keys(data).forEach(key => {
+        // NOTE: we're not going deeper than one level for objects. The reason we're parsing values here in the first place is for FormData, which only supports top level fields.
+        if (typeof data[key] === 'object') preparedData[key] = data[key]
+        else {
+            const expectedType = schema[key]._type
+            const value = data[key]
+            if (expectedType === 'Boolean' && typeof value !== 'boolean') {
+                if (value === 'true') preparedData[key] = true
+                else if (value === 'false') preparedData[key] = false
+            } else if (expectedType === 'Number' && typeof value !== 'number') {
+                const parsed = parseFloat(value)
+                preparedData[key] = parsed
+                if (isNaN(parsed)) delete preparedData[key]
+            } else preparedData[key] = value
+        }
+    })
+
+    return preparedData
 }
 
 module.exports = prepare

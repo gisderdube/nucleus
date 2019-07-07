@@ -7,6 +7,7 @@ const enforce = require('express-sslify')
 const chalk = require('chalk')
 const portfinder = require('portfinder')
 const logger = require('loglevel')
+const fileUpload = require('express-fileupload')
 
 const identity = require('./middlewares/identity')
 const error = require('./middlewares/error')
@@ -46,11 +47,13 @@ const startServer = async () => {
     if (config.IS_DEV) server.use(morgan('dev'))
     else server.use(morgan('common'))
 
+    server.use('*', identity)
+    config.beforeSetup(server)
+
+    server.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
 
-    server.use('*', identity)
-    config.beforeSetup(server)
     setupServiceRoutes(server)
     config.setup(server)
     server.get('/', (req, res) => {

@@ -46,6 +46,9 @@ const validate = (type, value, conditions = {}) => {
         case 'Date':
             validateDate(value, conditions)
             break
+        case 'File':
+            validateFile(value, conditions)
+            break
         case 'Mixed':
             break
         default:
@@ -138,6 +141,33 @@ const validateDate = (value, conditions) => {
         !moment(value).isValid()
     ) {
         throw new Error('Value did not match type Date.')
+    }
+
+    Object.keys(conditions).forEach(key => {
+        if (knownConditions[key]) knownConditions[key](conditions[key])
+    })
+}
+
+const validateFile = (value, conditions) => {
+    const knownConditions = {
+        _minSize: def => {
+            if (value.size < def) throw new Error('Value did not fulfill the _minSize condition')
+        },
+
+        _maxSize: def => {
+            if (value.size > def) throw new Error('Value did not fulfill the _maxSize condition')
+        },
+    }
+
+    if (
+        typeof value !== 'object' ||
+        !value.hasOwnProperty('name') ||
+        !value.hasOwnProperty('data') ||
+        !value.hasOwnProperty('size') ||
+        !value.hasOwnProperty('mimetype') ||
+        !value.hasOwnProperty('md5')
+    ) {
+        throw new Error('Value did not match type File.')
     }
 
     Object.keys(conditions).forEach(key => {

@@ -171,14 +171,14 @@ schema: {
 You can also restrict the file size of the incoming file (see below). If you want to test the file services, you have to pass an object with the following fields:
 
 ```
-    name: 'edtr tablet test.pdf',
+    name: 'some-file.pdf',
     data: <Buffer ... >,
     size: 9510088,
     mimetype: 'application/pdf',
     md5: 'b4c14169a0ee231f1d7cd7d92d2eb27a',
 ```
 
-You can simply put fake values in.
+To test the service, you can simply provide fake values.
 
 FormData only supports one level depth, meaning you cannot nest objects when sending files. However, Booleans, Numbers and Dates will be parsed.
 

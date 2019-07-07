@@ -9,6 +9,7 @@ const validate = require('./middlewares/validate')
 const callService = async (req, res, data) => {
     const { identity } = req
     try {
+        data = { ...data, ...req.files }
         const { service, schema, ...options } = require(`${
             NUCLEUS_CONFIG.SERVICE_PATH
         }${req.path.replace(NUCLEUS_CONFIG.SERVICE_ENDPOINT, '')}`)
@@ -40,6 +41,7 @@ function setupServiceRoutes(server) {
 
     server.post(`${NUCLEUS_CONFIG.SERVICE_ENDPOINT}/*`, (req, res) => {
         const { body: data } = req
+
         callService(req, res, data)
     })
 }
