@@ -12,8 +12,6 @@ For Nucleus to work correctly, you have to define a config, before you call any 
 
 ```
 global.NUCLEUS_CONFIG = {
-    beforeSetup: () => {}, // will be setup before the normal routes will be handled, e.g. service routes
-    setup: () => {}, // will be setup after the normal routes
     IS_PRODUCTION: false,
     IS_STAGING: false,
     IS_DEV: true,
