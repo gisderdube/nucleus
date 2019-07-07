@@ -21,7 +21,7 @@ const requireModels = dirPath => {
 const connect = async (uri, modelsFolder) => {
     try {
         await mongoose.connect(uri, { useNewUrlParser: true })
-        logger.info(chalk.cyan.bold('Connected to MongoDB'))
+        if (!NUCLEUS_CONFIG.IS_TEST) logger.info(chalk.cyan.bold('Connected to MongoDB'))
 
         if (!modelsFolder) return
         requireModels(modelsFolder)
