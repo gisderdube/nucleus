@@ -95,3 +95,44 @@ test('strip system options (except _required and _array) from nested declaration
         },
     })
 })
+
+test('parse data', t => {
+    const schema = {
+        n: {
+            _type: 'Number',
+        },
+        b: {
+            _type: 'Boolean',
+        },
+    }
+
+    const data = {
+        n: '12',
+        b: 'false',
+    }
+
+    const { data: preparedData } = prepare(schema, data)
+
+    t.deepEqual(preparedData, { n: 12, b: false })
+})
+
+test('skip data that is not defined in schema', t => {
+    const schema = {
+        n: {
+            _type: 'Number',
+        },
+        b: {
+            _type: 'Boolean',
+        },
+    }
+
+    const data = {
+        n: '12',
+        b: 'false',
+        c: '123',
+    }
+
+    const { data: preparedData } = prepare(schema, data)
+
+    t.deepEqual(preparedData, { n: 12, b: false })
+})
