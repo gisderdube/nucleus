@@ -47,6 +47,7 @@ function prepareData(data, schema) {
     Object.keys(data).forEach(key => {
         // NOTE: we're not going deeper than one level for objects. The reason we're parsing values here in the first place is for FormData, which only supports top level fields.
         if (!schema[key]) return null
+        else if (data[key] === '' || data[key] === undefined) delete data[key]
         else if (typeof data[key] === 'object') preparedData[key] = data[key]
         else {
             const expectedType = schema[key]._type

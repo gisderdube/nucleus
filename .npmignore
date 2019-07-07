@@ -2,3 +2,4 @@ _example/
 .eslintrc.js
 .gitignore
 .prettierrc
+**/*.test.js
