@@ -12,7 +12,7 @@ const bootstrap = async () => {
     if (config.IS_PRODUCTION) logger.setLevel('info')
     else logger.setLevel('trace')
 
-    if (NUCLEUS_CONFIG.MONGODB_URI && NUCLEUS_CONFIG.IS_TEST) {
+    if (NUCLEUS_CONFIG.MONGODB_URI && !NUCLEUS_CONFIG.IS_TEST) {
         await connect(
             config.MONGODB_URI,
             config.MONGODB_MODELS_PATH

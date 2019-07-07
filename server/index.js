@@ -12,7 +12,6 @@ const fileUpload = require('express-fileupload')
 const identity = require('./middlewares/identity')
 const error = require('./middlewares/error')
 
-const { connect } = require('../utils/mongo')
 const bootstrap = require('../utils/bootstrap')
 const setupServiceRoutes = require('./service')
 
@@ -29,7 +28,7 @@ const startServer = async (
         )
     }
 
-    bootstrap()
+    await bootstrap()
 
     const server = express()
 
