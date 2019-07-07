@@ -49,7 +49,7 @@ function prepareData(data, schema) {
         if (!schema[key]) return null
         else if (data[key] === '' || data[key] === undefined) return delete data[key]
         else if (typeof data[key] === 'object') preparedData[key] = data[key]
-        else if (data[key]) {
+        else if (data.hasOwnProperty(key)) {
             const expectedType = schema[key]._type
             const value = data[key]
             if (expectedType === 'Boolean' && typeof value !== 'boolean') {
