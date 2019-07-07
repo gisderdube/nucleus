@@ -12,7 +12,7 @@ const callService = async (req, res, data) => {
         data = { ...data, ...req.files }
         const { service, schema, ...options } = require(`${
             NUCLEUS_CONFIG.SERVICE_PATH
-        }${req.path.replace(NUCLEUS_CONFIG.SERVICE_ENDPOINT, '')}`)
+        }${req.requestedServicePath.replace(NUCLEUS_CONFIG.SERVICE_ENDPOINT, '')}`)
         try {
             access(options, identity)
             const { data: preparedData, schema: preparedSchema } = prepare(schema, data)

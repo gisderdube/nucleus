@@ -41,6 +41,10 @@ const startServer = async (
     if (config.IS_DEV) server.use(morgan('dev'))
     else server.use(morgan('common'))
 
+    server.use(config.SERVICE_ENDPOINT, (req, res, next) => {
+        req.requestedServicePath = req.path
+        next()
+    })
     server.use('*', identity)
     await middlewares(server)
 
