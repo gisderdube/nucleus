@@ -1,4 +1,4 @@
-const validate = rrequire('utils/validate')
+const validate = require('./validate')
 
 const FILTER_OPERATORS = {
     Number: {

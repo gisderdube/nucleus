@@ -31,13 +31,6 @@ const startServer = async (
 
     bootstrap()
 
-    if (config.MONGODB_URI) {
-        await connect(
-            config.MONGODB_URI,
-            config.MONGODB_MODELS_PATH
-        )
-    }
-
     const server = express()
 
     if (config.ENFORCE_SSL && (config.IS_PRODUCTION || config.IS_STAGING)) {

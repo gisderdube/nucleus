@@ -7,9 +7,7 @@ module.exports = {
     ],
     plugins: ['standard', 'import', 'promise', 'node'],
     globals: {
-        rrequire: false,
         ServiceError: false,
-        __: false,
         NUCLEUS_CONFIG: false,
     },
     env: {
