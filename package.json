@@ -31,9 +31,11 @@
         "jsonwebtoken": "^8.5.1",
         "loglevel": "^1.6.1",
         "moment": "^2.24.0",
-        "mongoose": "^5.5.13",
         "morgan": "^1.9.1",
         "portfinder": "^1.0.20"
+    },
+    "peerDependencies": {
+        "mongoose": "^5.5.13"
     },
     "devDependencies": {
         "ava": "^1.4.1",
