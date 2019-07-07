@@ -1,7 +1,9 @@
 const logger = require('loglevel')
 const ServiceError = require('./ServiceError')
 
-const bootstrap = async config => {
+const bootstrap = async () => {
+    const config = global.NUCLEUS_CONFIG
+
     global.ServiceError = ServiceError
 
     // set logging
@@ -9,6 +11,6 @@ const bootstrap = async config => {
     else logger.setLevel('trace')
 }
 
-if (process.env.NODE_ENV === 'test') bootstrap()
+if (NUCLEUS_CONFIG.IS_TEST) bootstrap()
 
 module.exports = bootstrap

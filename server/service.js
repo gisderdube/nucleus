@@ -1,5 +1,3 @@
-const express = require('express')
-const router = express.Router()
 const logger = require('loglevel')
 
 const error = require('./middlewares/error')
@@ -8,19 +6,17 @@ const prepare = require('./middlewares/prepare')
 const sanitize = require('./middlewares/sanitize')
 const validate = require('./middlewares/validate')
 
-const callService = async (req, res, data, config) => {
+const callService = async (req, res, data) => {
     const { identity } = req
     try {
-        const { service, schema, ...options } = require(`${config.SERVICE_PATH}${req.path.replace(
-            config.SERVICE_ENDPOINT,
-            ''
-        )}`)
+        const { service, schema, ...options } = require(`${
+            NUCLEUS_CONFIG.SERVICE_PATH
+        }${req.path.replace(NUCLEUS_CONFIG.SERVICE_ENDPOINT, '')}`)
         try {
             access(options, identity)
             const { data: preparedData, schema: preparedSchema } = prepare(schema, data)
             const validatedData = validate(preparedSchema, preparedData)
             const sanitizedData = sanitize(preparedSchema, validatedData)
-            // if (req.headers['peeces-language']) identity.language = req.headers['peeces-language'] TODO
             const result = await service(sanitizedData, identity)
 
             res.send(result)
@@ -37,15 +33,14 @@ const callService = async (req, res, data, config) => {
     }
 }
 
-function setupServiceRoutes(server, config) {
-    server.get('/service/*', (req, res) => {
-        callService(req, res, req.query, config)
+function setupServiceRoutes(server) {
+    server.get(`${NUCLEUS_CONFIG.SERVICE_ENDPOINT}/*`, (req, res) => {
+        callService(req, res, req.query)
     })
 
-    server.post('/service/*', (req, res) => {
+    server.post(`${NUCLEUS_CONFIG.SERVICE_ENDPOINT}/*`, (req, res) => {
         const { body: data } = req
-
-        callService(req, res, data, config)
+        callService(req, res, data)
     })
 }
 

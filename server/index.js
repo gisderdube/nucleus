@@ -8,29 +8,17 @@ const chalk = require('chalk')
 const portfinder = require('portfinder')
 const logger = require('loglevel')
 
+const identity = require('./middlewares/identity')
+const error = require('./middlewares/error')
+
 const { connect } = require('../utils/mongo')
 const bootstrap = require('../utils/bootstrap')
 const setupServiceRoutes = require('./service')
 
-const DEFAULT_CONFIG = {
-    IS_PRODUCTION: false,
-    IS_STAGING: false,
-    IS_DEV: true,
-    IS_TEST: false,
-    PORT: 3000,
-    ENFORCE_SSL: true,
-    MONGODB_URI: null,
-    MONGODB_MODELS_PATH: null,
-    SERVICE_PATH: null,
-    SERVICE_ENDPOINT: '/service',
-}
+require('./config')
 
-const startServer = async (setup = () => {}, serverConfig = {}) => {
-    const config = {
-        ...DEFAULT_CONFIG,
-        ...serverConfig,
-    }
-
+const startServer = async () => {
+    const config = global.NUCLEUS_CONFIG
     if (!config.SERVICE_PATH) {
         throw new Error(
             'Please provide a path to the services (SERVICE_PATH) folder in the server config.'
@@ -38,7 +26,7 @@ const startServer = async (setup = () => {}, serverConfig = {}) => {
     }
 
     // set logging
-    bootstrap(config)
+    bootstrap()
 
     if (config.MONGODB_URI) {
         await connect(
@@ -61,8 +49,17 @@ const startServer = async (setup = () => {}, serverConfig = {}) => {
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
 
-    setupServiceRoutes(server, config)
-    setup(server)
+    server.use('*', identity)
+    config.beforeSetup(server)
+    setupServiceRoutes(server)
+    config.setup(server)
+    server.get('/', (req, res) => {
+        // NOTE this should actually never be triggered, if routes are defined in setup()
+        res.send('Hello from Nucleus!')
+    })
+    server.use((req, res) => {
+        return error(res, new ServiceError('NOT_FOUND', 'The requested resource does not exist.'))
+    })
 
     if (config.IS_TEST) return server.listen()
 

@@ -60,6 +60,7 @@
         ],
         "require": [
             "babel-polyfill",
+            "./server/config",
             "./utils/bootstrap"
         ]
     }

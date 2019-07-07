@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const logger = require('loglevel')
 const fs = require('fs')
 const path = require('path')
+const chalk = require('chalk')
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('useFindAndModify', false)
@@ -20,7 +21,7 @@ const requireModels = dirPath => {
 const connect = async (uri, modelsFolder) => {
     try {
         await mongoose.connect(uri, { useNewUrlParser: true })
-        logger.info('Connected to MongoDB')
+        logger.info(chalk.cyan.bold('Connected to MongoDB'))
 
         if (!modelsFolder) return
         requireModels(modelsFolder)

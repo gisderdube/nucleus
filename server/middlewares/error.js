@@ -1,6 +1,6 @@
 const logger = require('loglevel')
 
-const ERRORS = {
+const DEFAULT_ERRORS = {
     NO_AUTH: {
         status: 401,
         code: 'no-auth',
@@ -45,6 +45,8 @@ const ERRORS = {
 }
 
 const error = (res, inError) => {
+    const ERRORS = { ...NUCLEUS_CONFIG.ERRORS, ...DEFAULT_ERRORS }
+
     let returnErr
     try {
         returnErr = ERRORS[inError.code] || ERRORS['GENERIC']

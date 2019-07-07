@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken')
 
-const encode = (data, JWT_SECRET) => jwt.sign({ payload: data }, JWT_SECRET)
+const { JWT_SECRET } = NUCLEUS_CONFIG
 
-const decode = (token, JWT_SECRET) => jwt.verify(token, JWT_SECRET).payload
+const encode = data => jwt.sign({ payload: data }, JWT_SECRET)
+
+const decode = token => jwt.verify(token, JWT_SECRET).payload
 
 module.exports = { encode, decode }

@@ -1,33 +1,34 @@
-const { getSchemaProperties } = require('../../utils/service')
 const validateUtil = require('../../utils/validate')
 
 /**
-schema: {
-    name: {
-        _array: true,
-        _type: 'String',
+ schema: {
+     name: {
+         _array: true,
+         _type: 'String',
+        }
+        address: {
+            street: {
+                _type: 'String'
+            },
+            number: {
+                _type: 'Number',
+                _min: 1,
+            },
+        },
     }
-    address: {
-        street: {
-            _type: 'String'
+    
+    data: {
+        name: 'Mark',
+        address: {
+            street: 'Hauptstraße',
+            number: 4,
         },
-        number: {
-            _type: 'Number',
-            _min: 1,
-        },
-    },
-}
-
-data: {
-    name: 'Mark',
-    address: {
-        street: 'Hauptstraße',
-        number: 4,
-    },
-}
- */
+    }
+    */
 
 const validate = (schema, data, stack = '') => {
+    const { getSchemaProperties } = require('../../utils/service') // TODO move to top
+
     const d = {}
     Object.keys(schema)
         .filter(el => el.charAt(0) !== '_')

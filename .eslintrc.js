@@ -10,6 +10,7 @@ module.exports = {
         rrequire: false,
         ServiceError: false,
         __: false,
+        NUCLEUS_CONFIG: false,
     },
     env: {
         browser: true,
