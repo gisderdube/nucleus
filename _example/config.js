@@ -1,11 +1,6 @@
 const path = require('path')
 
-const routes = require('./routes')
-const middleware = require('./middleware')
-
 global.NUCLEUS_CONFIG = {
-    beforeSetup: middleware,
-    setup: routes,
     IS_PRODUCTION: false,
     IS_STAGING: false,
     IS_DEV: true,

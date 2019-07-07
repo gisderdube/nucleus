@@ -18,7 +18,10 @@ const setupServiceRoutes = require('./service')
 
 require('./config')
 
-const startServer = async () => {
+const startServer = async (
+    routes = () => {}, // will be setup after the normal routes
+    middlewares = () => {} // will be setup before the normal routes will be handled, e.g. service routes
+) => {
     const config = global.NUCLEUS_CONFIG
     if (!config.SERVICE_PATH) {
         throw new Error(
@@ -26,7 +29,6 @@ const startServer = async () => {
         )
     }
 
-    // set logging
     bootstrap()
 
     if (config.MONGODB_URI) {
@@ -48,14 +50,14 @@ const startServer = async () => {
     else server.use(morgan('common'))
 
     server.use('*', identity)
-    config.beforeSetup(server)
+    await middlewares(server)
 
     server.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     server.use(bodyParser.json())
     server.use(bodyParser.urlencoded({ extended: true }))
 
-    setupServiceRoutes(server)
-    config.setup(server)
+    await setupServiceRoutes(server)
+    await routes(server)
     server.get('/', (req, res) => {
         // NOTE this should actually never be triggered, if routes are defined in setup()
         res.send('Hello from Nucleus!')

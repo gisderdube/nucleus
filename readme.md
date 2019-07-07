@@ -46,4 +46,12 @@ You can then simply start a server:
     const server = await startServer()
 ```
 
-That's it! The server will be running and you can acces it. However, you won't be getting much
+That's it! The server will be running and you can acces it. However, you won't be getting much functionality. You can use the `routes` function to add normal routes and other utilities, as well as the `middlewares` function to declare additional global middleware. Simply pass them to `startServer(routes, middlewares)`
+
+### MongoDB
+
+If you provide a `MONGODB_URI` in the config, the server will automatically connect to the database.
+
+### Services
+
+Please have a look at services.md to get an in-depth look on how to build and use services. If you want to call services internally, you can `require` it from the main module.
