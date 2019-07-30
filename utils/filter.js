@@ -10,6 +10,9 @@ const FILTER_OPERATORS = {
         AFTER: '$gt',
         BEFORE: '$lt',
     },
+    Boolean: {
+        EQUALS: '$eq',
+    },
     // we can extend that as needed
 }
 
