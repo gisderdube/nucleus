@@ -5,8 +5,8 @@ const access = require('./middlewares/access')
 const prepare = require('./middlewares/prepare')
 const sanitize = require('./middlewares/sanitize')
 const validate = require('./middlewares/validate')
-
 const callService = async (req, res, data) => {
+    const { trackError = () => {} } = NUCLEUS_CONFIG
     const { identity } = req
     try {
         data = { ...data, ...req.files }
@@ -24,11 +24,13 @@ const callService = async (req, res, data) => {
         } catch (err) {
             if (err instanceof ServiceError) throw err
             logger.error(err)
+            trackError(err)
             throw new ServiceError('INTERNAL')
         }
     } catch (err) {
         if (err instanceof ServiceError) return error(res, err)
         logger.error(err)
+        trackError(err)
         // if the error comes from the require (meaning it is not a service error), it does not have a code
         return error(res, new ServiceError('NOT_FOUND', 'The requested endpoint does not exist.'))
     }

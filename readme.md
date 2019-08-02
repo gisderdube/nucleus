@@ -30,6 +30,7 @@ global.NUCLEUS_CONFIG = {
             description: 'The password you provided is invalid.',
         },
     },
+    trackError: err => console.error(err), // you can plug in custom error tracking logic
 }
 
 ```
