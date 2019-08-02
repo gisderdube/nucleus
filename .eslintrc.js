@@ -4,8 +4,9 @@ module.exports = {
         'plugin:node/recommended',
         'plugin:import/warnings',
         'plugin:promise/recommended',
+        'plugin:prettier/recommended',
     ],
-    plugins: ['standard', 'import', 'promise', 'node'],
+    plugins: ['standard', 'import', 'promise', 'node', 'prettier'],
     globals: {
         ServiceError: false,
         NUCLEUS_CONFIG: false,
@@ -66,5 +67,12 @@ module.exports = {
         'import/no-unresolved': 0,
         'node/no-unsupported-features': 0,
         'prefer-template': 2,
+        'prettier/prettier': [
+            'error',
+            {},
+            {
+                usePrettierrc: true,
+            },
+        ],
     },
 }
