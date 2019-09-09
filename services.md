@@ -140,7 +140,7 @@ schema: {
 ### `_sanitize`
 
 This can be used to transform clean up the incoming data before using it. Current usecases are for String only and can be used as followed
-`_sanitize: 'operation1|operation2'`, where the operations are being executed successively. Possible operations are `capitalize|lowerCase|upperCase|removeSpaces|trim`.
+`_sanitize: 'operation1|operation2'`, where the operations are being executed successively. Possible operations are `capitalize|lowerCase|upperCase|removeSpaces|trim|slugify`.
 
 IMPORTANT: The sanitizer actually runs after the validation specified in the options below.
 
