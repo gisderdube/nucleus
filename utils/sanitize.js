@@ -14,6 +14,8 @@ const sanitize = (type, value, operations = '') => {
             return sanitizeObjectId(value, operations)
         case 'Date':
             return sanitizeDate(value, operations)
+        case 'Slugify':
+            return slugify(value)
         default:
             return value
     }
@@ -51,6 +53,23 @@ const sanitizeObjectId = (value, conditions) => {
 
 const sanitizeDate = (value, conditions) => {
     return moment(value)
+}
+
+const slugify = value => {
+    const a = 'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;'
+    const b = 'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------'
+    const p = new RegExp(a.split('').join('|'), 'g')
+
+    return value
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(p, c => b.charAt(a.indexOf(c)))
+        .replace(/&/g, '-and-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '')
 }
 
 module.exports = sanitize
