@@ -36,11 +36,11 @@ const sanitizeString = (value, operations) => {
 
         removeSpaces: input => input.replace(/\s/g, ''),
 
-        slugify = input => {
+        slugify: input => {
             const a = 'àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;'
             const b = 'aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------'
             const p = new RegExp(a.split('').join('|'), 'g')
-        
+
             return input
                 .toString()
                 .toLowerCase()
@@ -51,8 +51,7 @@ const sanitizeString = (value, operations) => {
                 .replace(/\-\-+/g, '-')
                 .replace(/^-+/, '')
                 .replace(/-+$/, '')
-        }
-        
+        },
     }
 
     let sanitized = value
