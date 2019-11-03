@@ -18,7 +18,7 @@ const callService = async (req, res, data) => {
             const { data: preparedData, schema: preparedSchema } = prepare(schema, data)
             const validatedData = validate(preparedSchema, preparedData)
             const sanitizedData = sanitize(preparedSchema, validatedData)
-            const result = await service(sanitizedData, identity)
+            const result = await service(sanitizedData, identity, { req })
 
             res.send(result)
         } catch (err) {
